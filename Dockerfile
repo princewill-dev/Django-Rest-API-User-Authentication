@@ -15,8 +15,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
+# Create static and media directories
+RUN mkdir -p /app/static /app/media
+
 # Expose port for the application
 EXPOSE 8000
 
+# Set entrypoint script as executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi:application"]
+CMD ["/entrypoint.sh"]

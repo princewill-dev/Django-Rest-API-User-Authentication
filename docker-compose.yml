@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  # Nginx service
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/app/static
+      - ./media:/app/media
+    depends_on:
+      - web
+
   # Django web application
   web:
     build: .
@@ -13,6 +25,8 @@ services:
       - ./envs/.auth.env
     volumes:
       - ./:/app
+      - ./static:/app/static
+      - ./media:/app/media
 
   # PostgreSQL Database
   db:
